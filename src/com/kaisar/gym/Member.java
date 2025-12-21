@@ -70,12 +70,12 @@ public class Member {
         String membershipName = membership.getMembershipName();
         if(membershipName.equals("Basic")){
             membership = advanced;
-            System.out.println("Membership upgraded to Advanced");
+            System.out.println(getFullName() + "'s membership upgraded to Advanced");
         } else if(membershipName.equals("Advanced")){
             membership = premium;
-            System.out.println("Membership upgraded to Premium");
+            System.out.println(getFullName() + "'s membership upgraded to Premium");
         } else{
-            System.out.println("Membership already at highest level");
+            System.out.println(getFullName() + "'s membership already at highest level");
         }
     }
 }

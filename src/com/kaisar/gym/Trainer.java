@@ -1,15 +1,17 @@
 package com.kaisar.gym;
 
+import java.util.ArrayList;
+
 public class Trainer {
     private int trainerId;
-    private String fullName;
+    private String trainerName;
     private String specialization;
     private int experienceYears;
 
     //constructor
-    public Trainer(int trainerId, String fullName, String specialization, int experienceYears){
+    public Trainer(int trainerId, String trainerName, String specialization, int experienceYears){
         this.trainerId = trainerId;
-        this.fullName = fullName;
+        this.trainerName = trainerName;
         this.specialization = specialization;
         this.experienceYears = experienceYears;
     }
@@ -23,12 +25,12 @@ public class Trainer {
         this.trainerId = trainerId;
     }
 
-    public String getFullName() {
-        return fullName;
+    public String getTrainerName() {
+        return trainerName;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    public void setTrainerName(String trainerName) {
+        this.trainerName = trainerName;
     }
 
     public String getSpecialization() {
@@ -52,11 +54,24 @@ public class Trainer {
     public String toString() {
         return "Trainer{" +
                 "trainerId=" + trainerId +
-                ", fullName='" + fullName + '\'' +
+                ", trainerName='" + trainerName + '\'' +
                 ", specialization='" + specialization + '\'' +
                 ", experienceYears=" + experienceYears +
                 '}';
     }
 
     //additional methods
+    public boolean isActive(ArrayList<WorkoutSession> sessions){
+        String trainerName = getTrainerName();
+        for(WorkoutSession session: sessions){
+            if(session.getTrainer().equals(trainerName)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isExperienced(){
+        return experienceYears > 20;
+    }
 }

@@ -1,5 +1,7 @@
 package com.kaisar.gym;
 
+import java.util.ArrayList;
+
 public class Membership {
     private String membershipName;
     private int workoutDays;
@@ -59,4 +61,23 @@ public class Membership {
     }
 
     // additional methods
+    public int users(ArrayList<Member> members){
+        int count = 0;
+        for(Member member: members){
+            if(member.getMembership().getMembershipName().equals(membershipName)){
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public void income(ArrayList<Member> members){
+        double income = 0;
+        for(Member member: members){
+            if (member.getMembership().getMembershipName().equals(membershipName)) {
+                income += price;
+            }
+        }
+        System.out.println("Total income from " + membershipName + ": " + income);
+    }
 }

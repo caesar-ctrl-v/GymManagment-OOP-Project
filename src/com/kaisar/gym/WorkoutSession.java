@@ -15,6 +15,13 @@ public class WorkoutSession {
         this. durationMinutes = durationMinutes;
         members = new ArrayList<>();
     }
+    //default constructor for workoutSessions without trainer
+    public WorkoutSession(int sessionId, int durationMinutes){
+        this.sessionId = sessionId;
+        this.trainer = "null";
+        this. durationMinutes = durationMinutes;
+        members = new ArrayList<>();
+    }
 
     //getters and setters
     public int getSessionId() {
