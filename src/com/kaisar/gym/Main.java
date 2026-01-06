@@ -1,5 +1,6 @@
 package com.kaisar.gym;
 
+import javax.xml.transform.Source;
 import java.util.Scanner;
 import java.util.ArrayList; // Allows us to read user input
 
@@ -9,6 +10,7 @@ public class Main {
     private static ArrayList<Membership> memberships = new ArrayList<>();
     private static ArrayList<WorkoutSession> workoutSessions = new ArrayList<>();
     private static Scanner scanner = new Scanner(System.in);
+
 
     public static void main(String[] args) {
         System.out.println("=== Gym Management System ===");
@@ -27,19 +29,26 @@ public class Main {
 
         //Adding test trainer objects
         trainers.add(new Trainer(1, "Mike Tyson", "Boxing Trainer", 40));
-        trainers.add(new Trainer(2, "Jose Mourinho", "Basketball Trainer", 34));
+        trainers.add(new Trainer(2, "Jose Mourinho", "Football Trainer", 34));
         trainers.add(new Trainer(3, "Arnold Schwarzenegger", "Bodybuilding", 62));
 
         //Adding test workoutSession objects
-        workoutSessions.add(new WorkoutSession(1, "Mike Tyson", 15));
-        workoutSessions.add(new WorkoutSession(2, "Gennady Golovkin", 90));
-        workoutSessions.add(new WorkoutSession(3, 60));
+        workoutSessions.add(new WorkoutSession(1011, trainers.getFirst(), 15));
+        workoutSessions.add(new WorkoutSession(1012, trainers.get(1), 90));
+        workoutSessions.add(new WorkoutSession(1013, 60));
 
-        workoutSessions.get(0).getMembers().add(members.get(0));
-        workoutSessions.get(0).getMembers().add(members.get(1));
-        workoutSessions.get(1).getMembers().add(members.get(0));
-        workoutSessions.get(1).getMembers().add(members.get(1));
-        workoutSessions.get(1).getMembers().add(members.get(2));
+        workoutSessions.add(new YogaWorkout(4029, trainers.getLast(), 60, "Yin", 5, true));
+        workoutSessions.add(new YogaWorkout(4028, trainers.getLast(), 90, "Default", 1, false));
+
+        workoutSessions.add(new StrengthWorkout(3045, trainers.getLast(), 45, "Chest", 4, 3, 2));
+        workoutSessions.add(new StrengthWorkout(3046, trainers.getLast(), 90, "Pull", 6, 4, 3));
+
+
+        workoutSessions.get(0).addMember(members.get(0));
+        workoutSessions.get(0).addMember(members.get(1));
+        workoutSessions.get(1).addMember(members.get(0));
+        workoutSessions.get(1).addMember(members.get(1));
+        workoutSessions.get(1).addMember(members.get(2));
 
 
         //Menu loop - continues until user exists
@@ -50,28 +59,25 @@ public class Main {
             scanner.nextLine(); // IMPORTANT: consume leftover newline
             switch (choice) {
                 case 1:
-                    addMember();
-                    break;
-                case 2:
-                    viewAllMembers();
-                    break;
-                case 3:
-                    addTrainer();
-                    break;
-                case 4:
-                    viewAllTrainers();
-                    break;
-                case 5:
-                    addMembership();
-                    break;
-                case 6:
-                    viewAllMemberships();
-                    break;
-                case 7:
                     addWorkoutSession();
                     break;
-                case 8:
+                case 2:
+                    addStrengthWorkout();
+                    break;
+                case 3:
+                    addYogaWorkout();
+                    break;
+                case 4:
                     viewAllWorkoutSessions();
+                    break;
+                case 5:
+                    demonstratePolymorphism();
+                    break;
+                case 6:
+                    viewStrengthWorkouts();
+                    break;
+                case 7:
+                    viewYogaWorkouts();
                     break;
                 case 0:
                     System.out.println("\nGoodbye! 👋 ");
@@ -92,14 +98,13 @@ public class Main {
         System.out.println("\n========================================");
         System.out.println("  GYM MANAGEMENT SYSTEM");
         System.out.println("========================================");
-        System.out.println("1. Add Member");
-        System.out.println("2. View All Members");
-        System.out.println("3. Add Trainer");
-        System.out.println("4. View All Trainers");
-        System.out.println("5. Add Membership");
-        System.out.println("6. View All Memberships");
-        System.out.println("7. Add Workout Session");
-        System.out.println("8. View All Workout Sessions");
+        System.out.println("1. Add Workout Session");
+        System.out.println("2. Add Strength Workout");
+        System.out.println("3. Add Yoga Workout");
+        System.out.println("4. View All Objects");
+        System.out.println("5. Count Burned Calories of All Objects");
+        System.out.println("6. View Strength Workouts Only");
+        System.out.println("7. View Yoga Workouts Only");
         System.out.println("0. Exit");
         System.out.println("========================================");
         System.out.print("Enter your choice: ");
@@ -273,8 +278,19 @@ public class Main {
         int sessionId = scanner.nextInt();
         scanner.nextLine();
 
-        System.out.println("Enter Trainer: ");
-        String trainer = scanner.nextLine();
+        System.out.println("Choose Trainer: ");
+        Trainer trainer = null;
+        for (int i = 0; i < trainers.size(); i++){
+            Trainer t = trainers.get(i);
+            System.out.println((i+1) + ". " + t.getTrainerName());
+        }
+        System.out.println("0. Null");
+        System.out.print("Number: ");
+        int trainerChoice = scanner.nextInt() - 1; // Read user's choice
+        scanner.nextLine();
+        if(trainerChoice != -1){
+            trainer = trainers.get(trainerChoice);
+        }
 
         System.out.println("Enter Duration Minutes: ");
         int durationMinutes = scanner.nextInt();
@@ -285,12 +301,178 @@ public class Main {
 
         //Add to ArrayList
         workoutSessions.add(workoutSession);
-        System.out.println("\n✅ Workout Session added successfully!");
+
+        boolean memberChoosing = true;
+        while(memberChoosing) {
+            System.out.println("--- Choose Members to add ---");
+            for (int i = 0; i < members.size(); i++) {
+                Member member = members.get(i);
+                System.out.println((i + 1) + ". " + member.getFullName());
+            }
+            System.out.println("0. Any other number to finish");
+
+            System.out.print("Number: ");
+            int memberChoice = scanner.nextInt() - 1; // Read user's choice
+            scanner.nextLine();
+
+            if(memberChoice >= members.size() || memberChoice < 0){
+                System.out.println("Finished!");
+                memberChoosing = false;
+            } else if(workoutSession.addMember(members.get(memberChoice))){
+                workoutSession.addMember(members.get(memberChoice));
+                System.out.println("✅ Member added successfully! Choose another one...");
+            } else{
+                System.out.println("❌ Member is already in Workout Session! Choose another...");
+            }
+            System.out.println();
+        }
+
+        System.out.println("✅ Workout Session added successfully!");
+    }
+
+    private static void addStrengthWorkout(){
+        System.out.println("\n--- Add Strength Workout Session ---");
+
+        System.out.println("Enter Workout Session ID: ");
+        int sessionId = scanner.nextInt();
+        scanner.nextLine();
+
+        System.out.println("Choose Trainer: ");
+        Trainer trainer = null;
+        for (int i = 0; i < trainers.size(); i++){
+            Trainer t = trainers.get(i);
+            System.out.println((i+1) + ". " + t.getTrainerName());
+        }
+        System.out.println("0. Null");
+        System.out.print("Number: ");
+        int trainerChoice = scanner.nextInt() - 1; // Read user's choice
+        scanner.nextLine();
+        if(trainerChoice != -1){
+            trainer = trainers.get(trainerChoice);
+        }
+
+        System.out.println("Enter Duration Minutes: ");
+        int durationMinutes = scanner.nextInt();
+        scanner.nextLine();
+
+        System.out.println("Enter Muscle Group: ");
+        String muscleGroup = scanner.nextLine();
+
+        System.out.println("Enter Sets Amount: ");
+        int sets = scanner.nextInt();
+        scanner.nextLine();
+
+        System.out.println("Enter Reps Amount: ");
+        int reps = scanner.nextInt();
+        scanner.nextLine();
+
+        System.out.println("Enter Rest Minutes: ");
+        int restMinutes = scanner.nextInt();
+        scanner.nextLine();
+
+        WorkoutSession workoutSession = new StrengthWorkout(sessionId, trainer, durationMinutes, muscleGroup, sets, reps, restMinutes);
+
+        workoutSessions.add(workoutSession);
+
+        boolean memberChoosing = true;
+        while(memberChoosing) {
+            System.out.println("--- Choose Members to add ---");
+            for (int i = 0; i < members.size(); i++) {
+                Member member = members.get(i);
+                System.out.println((i + 1) + ". " + member.getFullName());
+            }
+            System.out.println("0. Done");
+
+            System.out.print("Number: ");
+            int memberChoice = scanner.nextInt() - 1; // Read user's choice
+            scanner.nextLine();
+
+            if(memberChoice >= members.size() || memberChoice < 0){
+                System.out.println("Finished!");
+                memberChoosing = false;
+            } else if(workoutSession.addMember(members.get(memberChoice))){
+                workoutSession.addMember(members.get(memberChoice));
+                System.out.println("✅ Member added successfully! Choose another one...");
+            } else{
+                System.out.println("❌ Member is already in Workout Session! Choose another...");
+            }
+            System.out.println();
+        }
+
+        System.out.println("✅ Strength Workout Session added successfully!");
+    }
+
+    private static void addYogaWorkout(){
+        System.out.println("\n--- Add Yoga Workout Session ---");
+
+        System.out.println("Enter Workout Session ID: ");
+        int sessionId = scanner.nextInt();
+        scanner.nextLine();
+
+        System.out.println("Choose Trainer: ");
+        Trainer trainer = null;
+        for (int i = 0; i < trainers.size(); i++){
+            Trainer t = trainers.get(i);
+            System.out.println((i+1) + ". " + t.getTrainerName());
+        }
+        System.out.println("0. Null");
+        System.out.print("Number: ");
+        int trainerChoice = scanner.nextInt() - 1; // Read user's choice
+        scanner.nextLine();
+        if(trainerChoice != -1){
+            trainer = trainers.get(trainerChoice);
+        }
+
+        System.out.println("Enter Duration Minutes: ");
+        int durationMinutes = scanner.nextInt();
+        scanner.nextLine();
+
+        System.out.println("Enter Yoga Style: ");
+        String yogaStyle = scanner.nextLine();
+
+        System.out.println("Enter Difficulty Level: ");
+        int difficultyLevel = scanner.nextInt();
+        scanner.nextLine();
+
+        System.out.println("Meditation Included: ");
+        boolean meditationIncluded = scanner.nextBoolean();
+        scanner.nextLine();
+
+        WorkoutSession workoutSession = new YogaWorkout(sessionId, trainer, durationMinutes, yogaStyle, difficultyLevel, meditationIncluded);
+
+        workoutSessions.add(workoutSession);
+
+        boolean memberChoosing = true;
+        while(memberChoosing) {
+            System.out.println("--- Choose Members to add ---");
+            for (int i = 0; i < members.size(); i++) {
+                Member member = members.get(i);
+                System.out.println((i + 1) + ". " + member.getFullName());
+            }
+            System.out.println("0. Done");
+
+            System.out.print("Number: ");
+            int memberChoice = scanner.nextInt() - 1; // Read user's choice
+            scanner.nextLine();
+
+            if(memberChoice >= members.size() || memberChoice < 0){
+                System.out.println("Finished!");
+                memberChoosing = false;
+            } else if(workoutSession.addMember(members.get(memberChoice))){
+                workoutSession.addMember(members.get(memberChoice));
+                System.out.println("✅ Member added successfully! Choose another one...");
+            } else{
+                System.out.println("❌ Member is already in Workout Session! Choose another...");
+            }
+            System.out.println();
+        }
+
+        System.out.println("✅ Yoga Workout Session added successfully!");
     }
 
     private static void viewAllWorkoutSessions(){
         System.out.println("\n========================================");
-        System.out.println("         ALL WORKOUT SESSIONS");
+        System.out.println("         ALL WORKOUT SESSIONS(POLYMORPHIC LIST)");
         System.out.println("========================================");
 
         if (workoutSessions.isEmpty()) {
@@ -302,13 +484,86 @@ public class Main {
         System.out.println();
 
         for (int i = 0; i < workoutSessions.size(); i++) {
-            com.kaisar.gym.WorkoutSession workoutSession = workoutSessions.get(i); //Get member at index i
+            WorkoutSession w = workoutSessions.get(i); //Get member at index i
 
-            System.out.println((i + 1) + ". Session ID:" + workoutSession.getSessionId());
-            System.out.println("  Members: " + workoutSession.getMemberNames());
-            System.out.println("  Trainer: " + workoutSession.getTrainer());
-            System.out.println("  Duration Minutes: " + workoutSession.getDurationMinutes());
-            System.out.println();
+            System.out.println((i+1)+ ". " + w);
+
+            if(w instanceof YogaWorkout yw){
+                if(yw.isMeditativeSession()){
+                    System.out.println("  \uD83E\uDDD8\u200D♀️ This is a Meditative Session. ");
+                }
+            } else if(w instanceof StrengthWorkout sw){
+                System.out.println("  \uD83C\uDFCB️\u200D♂️ This session total amount of " + sw.getTotalReps() + "reps.");
+            }
+        }
+
+        System.out.println();
+    }
+
+    private static void demonstratePolymorphism(){
+        System.out.println("\n========================================");
+        System.out.println("   POLYMORPHISM DEMONSTRATION");
+        System.out.println("========================================");
+        System.out.println("Calling calculateCaloriesBurned() on all sessions:");
+        System.out.println();
+
+        for(WorkoutSession w: workoutSessions){
+            System.out.println("[ " + w.getSessionId() + " ] This " + w.getWorkoutType() + " session burned calories total amount of: " + w.calculateCaloriesBurned());
+        }
+
+        System.out.println();
+    }
+
+    private static void viewStrengthWorkouts(){
+        System.out.println("\n========================================");
+        System.out.println("         STRENGTH WORKOUT ONLY");
+        System.out.println("========================================");
+
+        int swcount = 0;
+        for(WorkoutSession w: workoutSessions){
+            if(w instanceof StrengthWorkout){
+                StrengthWorkout sw = (StrengthWorkout) w;
+                swcount++;
+
+                System.out.println(swcount + ". " + sw.getWorkoutType() + " (" + sw.getSessionId() + ")");
+                System.out.println("  Muscle Group: " + sw.getMuscleGroup());
+                System.out.println("  Sets: " + sw.getSets());
+                System.out.println("  Reps: " + sw.getReps());
+                System.out.println("  Rest Minutes: " + sw.getRestMinutes());
+                System.out.println("\uD83C\uDFCB️\u200D♂️ This session total amount of " + sw.getTotalReps() + "reps.");
+                System.out.println();
+            }
+        }
+        if(swcount == 0){
+            System.out.println("No Strength Workout Sessions found.");
+        }
+    }
+
+    private static void viewYogaWorkouts(){
+        System.out.println("\n========================================");
+        System.out.println("         YOGA WORKOUT ONLY");
+        System.out.println("========================================");
+
+        int ywcount = 0;
+        for(WorkoutSession w: workoutSessions){
+            if(w instanceof YogaWorkout){
+                YogaWorkout yw = (YogaWorkout) w;
+                ywcount++;
+
+                System.out.println(ywcount + ". " + yw.getWorkoutType() + " (" + yw.getSessionId() + ")");
+                System.out.println("  Yoga Style: " + yw.getYogaStyle());
+                System.out.println("  Difficulty Level: " + yw.getDifficultyLevel());
+                System.out.println("  Meditation Included: " + yw.isMeditationIncluded());
+
+                if(yw.isMeditativeSession()){
+                    System.out.println("\uD83E\uDDD8\u200D♀️ This is a Meditative Session. ");
+                }
+
+                System.out.println();
+            }
+        }
+        if(ywcount == 0){
+            System.out.println("No Yoga Workout Sessions found.");
         }
     }
 }

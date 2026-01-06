@@ -12,7 +12,7 @@ public class Member {
     public Member(int memberId, String fullName, int age, String membershipName) {
         this.memberId = memberId;
         this.fullName = fullName;
-        this.age = age;
+        setAge(age);
         this.membershipName = membershipName;
     }
 

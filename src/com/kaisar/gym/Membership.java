@@ -12,7 +12,7 @@ public class Membership {
     public Membership(String membershipName, int workoutDays, double price, boolean trainerIncluded){
         this.membershipName = membershipName;
         this.workoutDays = workoutDays;
-        this.price = price;
+        setPrice(price);
         this.trainerIncluded = trainerIncluded;
     }
 

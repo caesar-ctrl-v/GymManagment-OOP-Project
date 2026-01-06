@@ -13,7 +13,7 @@ public class Trainer {
         this.trainerId = trainerId;
         this.trainerName = trainerName;
         this.specialization = specialization;
-        this.experienceYears = experienceYears;
+        setExperienceYears(experienceYears);
     }
 
     //getters and setters

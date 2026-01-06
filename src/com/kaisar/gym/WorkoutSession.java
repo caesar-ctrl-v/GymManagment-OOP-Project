@@ -5,20 +5,20 @@ import java.util.ArrayList;
 public class WorkoutSession {
     protected int sessionId;
     protected ArrayList<Member> members;
-    protected String trainer;
+    protected Trainer trainer;
     protected int durationMinutes;
 
     //constructor
-    public WorkoutSession(int sessionId, String trainer, int durationMinutes){
+    public WorkoutSession(int sessionId, Trainer trainer, int durationMinutes){
         this.sessionId = sessionId;
         this.trainer = trainer;
-        this. durationMinutes = durationMinutes;
+        setDurationMinutes(durationMinutes);
         members = new ArrayList<>();
     }
     //default constructor for workoutSessions without trainer
     public WorkoutSession(int sessionId, int durationMinutes){
         this.sessionId = sessionId;
-        this.trainer = "null";
+        this.trainer = null;
         this. durationMinutes = durationMinutes;
         members = new ArrayList<>();
     }
@@ -36,12 +36,12 @@ public class WorkoutSession {
         }
     }
 
-    public String getTrainer() {
+    public Trainer getTrainer() {
         return trainer;
     }
 
-    public void setTrainer(String trainer) {
-        if(trainer != null && !trainer.trim().isEmpty()){
+    public void setTrainer(Trainer trainer) {
+        if(trainer != null){
             this.trainer = trainer;
         } else{
             System.out.println("Warning: Trainer cannot be empty! Setting to null.");
@@ -77,15 +77,23 @@ public class WorkoutSession {
     @Override
     public String toString() {
 
-        return "WorkoutSession{" +
-                "sessionId=" + sessionId +
-                ", members=" + getMemberNames() +
-                ", trainer='" + trainer + '\'' +
-                ", durationMinutes=" + durationMinutes +
-                '}';
+        return "[ " + getWorkoutType() + " ] (Session ID: " + sessionId
+                + ", Members: " + getMemberNames()
+                + ", Trainer: " + getTrainerName()
+                + ", Duration Minutes: " + durationMinutes + ")";
     }
 
     //additional methods
+    //get workout type method
+    public String getWorkoutType() {
+        return "General workout";
+    }
+
+    //calculate calories burned method
+    public int calculateCaloriesBurned() {
+        return durationMinutes * 5;
+    }
+
     //get array of names of members
     public ArrayList<String> getMemberNames(){
         ArrayList<String> names = new ArrayList<>();
@@ -105,11 +113,9 @@ public class WorkoutSession {
     //add member method
     public boolean addMember(Member member) {
         if (member == null) {
-            System.out.println("Cannot add null member.");
             return false;
         }
         if (members.contains(member)) {
-            System.out.println("Member already in session.");
             return false;
         }
         members.add(member);
@@ -124,5 +130,12 @@ public class WorkoutSession {
             return false;
         }
     }
-
+    //get trainer name method
+    public String getTrainerName(){
+        if(trainer != null){
+            return trainer.getTrainerName();
+        } else{
+            return null;
+        }
+    }
 }
