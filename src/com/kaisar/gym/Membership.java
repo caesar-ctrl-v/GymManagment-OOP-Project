@@ -22,7 +22,11 @@ public class Membership {
     }
 
     public void setMembershipName(String membershipName) {
-        this.membershipName = membershipName;
+        if(membershipName != null && !membershipName.trim().isEmpty()){
+            this.membershipName = membershipName;
+        } else{
+            System.out.println("Warning: Membership Name cannot be empty!");
+        }
     }
 
     public int getWorkoutDays() {
@@ -30,7 +34,11 @@ public class Membership {
     }
 
     public void setWorkoutDays(int workoutDays) {
-        this.workoutDays = workoutDays;
+        if(workoutDays > 0){
+            this.workoutDays = workoutDays;
+        } else{
+            System.out.println("Warning: Workout Days must be more than zero!");
+        }
     }
 
     public double getPrice() {
@@ -38,7 +46,12 @@ public class Membership {
     }
 
     public void setPrice(double price) {
-        this.price = price;
+        if(price >= 0){
+            this.price = price;
+        } else{
+            System.out.println("Warning: Price cannot be negative! Setting to 0.");
+            this.price = 0;
+        }
     }
 
     public boolean isTrainerIncluded() {
@@ -64,20 +77,20 @@ public class Membership {
     public int users(ArrayList<Member> members){
         int count = 0;
         for(Member member: members){
-            if(member.getMembership().getMembershipName().equals(membershipName)){
+            if(member.getMembershipName().equals(membershipName)){
                 count++;
             }
         }
         return count;
     }
 
-    public void income(ArrayList<Member> members){
+    public double income(ArrayList<Member> members){
         double income = 0;
         for(Member member: members){
-            if (member.getMembership().getMembershipName().equals(membershipName)) {
+            if (member.getMembershipName().equals(membershipName)) {
                 income += price;
             }
         }
-        System.out.println("Total income from " + membershipName + ": " + income);
+        return income;
     }
 }

@@ -3,10 +3,10 @@ package com.kaisar.gym;
 import java.util.ArrayList;
 
 public class WorkoutSession {
-    private int sessionId;
-    private ArrayList<Member> members;
-    private String trainer;
-    private int durationMinutes;
+    protected int sessionId;
+    protected ArrayList<Member> members;
+    protected String trainer;
+    protected int durationMinutes;
 
     //constructor
     public WorkoutSession(int sessionId, String trainer, int durationMinutes){
@@ -29,7 +29,11 @@ public class WorkoutSession {
     }
 
     public void setSessionId(int sessionId) {
-        this.sessionId = sessionId;
+        if(sessionId >= 0){
+            this.sessionId = sessionId;
+        } else{
+            System.out.println("Warning: Session ID cannot be negative!");
+        }
     }
 
     public String getTrainer() {
@@ -37,7 +41,12 @@ public class WorkoutSession {
     }
 
     public void setTrainer(String trainer) {
-        this.trainer = trainer;
+        if(trainer != null && !trainer.trim().isEmpty()){
+            this.trainer = trainer;
+        } else{
+            System.out.println("Warning: Trainer cannot be empty! Setting to null.");
+            this.trainer = null;
+        }
     }
 
     public int getDurationMinutes() {
@@ -45,7 +54,15 @@ public class WorkoutSession {
     }
 
     public void setDurationMinutes(int durationMinutes) {
-        this.durationMinutes = durationMinutes;
+        if(durationMinutes >= 0 && durationMinutes <= 240){
+            this.durationMinutes = durationMinutes;
+        } else if(durationMinutes > 0){
+            System.out.println("Warning: Duration Minutes cannot exceed 240! Setting to 240.");
+            this.durationMinutes = 240;
+        } else{
+            System.out.println("Warning: Duration Minutes cannot be negative! Setting to 0.");
+            this.durationMinutes = 0;
+        }
     }
 
     public ArrayList<Member> getMembers() {
@@ -85,19 +102,27 @@ public class WorkoutSession {
         }
         return ages;
     }
-    //find whether group is senior or junior
-    public String findWorkoutSessionType(){
-        ArrayList<Integer> ages = getMemberAges();
-        int max = ages.getFirst();
-        for(int age: ages){
-            if(age > max){
-                max = age;
-            }
+    //add member method
+    public boolean addMember(Member member) {
+        if (member == null) {
+            System.out.println("Cannot add null member.");
+            return false;
         }
-        if(max < 16){
-            return "Junior Group";
-        } else{
-            return "Senior Group";
+        if (members.contains(member)) {
+            System.out.println("Member already in session.");
+            return false;
+        }
+        members.add(member);
+        return true;
+    }
+    //remove member method
+    public boolean removeMember(Member member) {
+        if (members.remove(member)) {
+            return true;
+        } else {
+            System.out.println("Member not found in session.");
+            return false;
         }
     }
+
 }

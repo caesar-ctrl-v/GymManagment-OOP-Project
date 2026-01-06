@@ -6,14 +6,14 @@ public class Member {
     private int memberId;
     private String fullName;
     private int age;
-    private Membership membership;
+    private String membershipName;
 
     //constructor
-    public Member(int memberId, String fullName, int age, Membership membership) {
+    public Member(int memberId, String fullName, int age, String membershipName) {
         this.memberId = memberId;
         this.fullName = fullName;
         this.age = age;
-        this.membership = membership;
+        this.membershipName = membershipName;
     }
 
     //getters and setters
@@ -22,7 +22,11 @@ public class Member {
     }
 
     public void setMemberId(int memberId) {
-        this.memberId = memberId;
+        if(memberId >= 0) {
+            this.memberId = memberId;
+        } else{
+            System.out.println("Warning: Member ID cannot be negative!");
+        }
     }
 
     public String getFullName() {
@@ -30,7 +34,11 @@ public class Member {
     }
 
     public void setFullName(String fullName) {
-        this.fullName = fullName;
+        if(fullName != null && !fullName.trim().isEmpty()) {
+            this.fullName = fullName;
+        } else{
+            System.out.println("Warning: Full Name cannot be empty!");
+        }
     }
 
     public int getAge() {
@@ -38,15 +46,23 @@ public class Member {
     }
 
     public void setAge(int age) {
-        this.age = age;
+        if(age >= 0){
+            this.age = age;
+        } else{
+            System.out.println("Warning: Age cannot be negative!");
+        }
     }
 
-    public Membership getMembership() {
-        return membership;
+    public String getMembershipName() {
+        return membershipName;
     }
 
-    public void setMembership(Membership membership) {
-        this.membership = membership;
+    public void setMembershipName(String membershipName) {
+        if(membershipName != null && !membershipName.trim().isEmpty()){
+            this.membershipName = membershipName;
+        } else{
+            System.out.println("Warning: Membership Name cannot be empty");
+        }
     }
 
     //toString() method
@@ -56,26 +72,22 @@ public class Member {
                 "memberId=" + memberId +
                 ", fullName='" + fullName + '\'' +
                 ", age=" + age +
-                ", membership='" + membership.getMembershipName() + '\'' +
+                ", membershipName='" + membershipName + '\'' +
                 '}';
     }
 
     //additional methods
-    public double costOfAppliedDiscount(double discount){
-        double price = getMembership().getPrice();
-        return price - price*(discount/100);
+    public boolean isAdult(){
+        return age >= 18;
     }
 
-    public void upgradeMembership(Membership advanced, Membership premium){
-        String membershipName = membership.getMembershipName();
+    public void updateMembership(){
         if(membershipName.equals("Basic")){
-            membership = advanced;
-            System.out.println(getFullName() + "'s membership upgraded to Advanced");
+            setMembershipName("Advanced");
         } else if(membershipName.equals("Advanced")){
-            membership = premium;
-            System.out.println(getFullName() + "'s membership upgraded to Premium");
+            setMembershipName("Premium");
         } else{
-            System.out.println(getFullName() + "'s membership already at highest level");
+            System.out.println("Membership already at highest level!");
         }
     }
 }

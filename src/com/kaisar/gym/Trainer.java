@@ -22,7 +22,11 @@ public class Trainer {
     }
 
     public void setTrainerId(int trainerId) {
-        this.trainerId = trainerId;
+        if(trainerId >= 0){
+            this.trainerId = trainerId;
+        } else{
+            System.out.println("Warning: Trainer ID cannot be negative!");
+        }
     }
 
     public String getTrainerName() {
@@ -30,7 +34,11 @@ public class Trainer {
     }
 
     public void setTrainerName(String trainerName) {
-        this.trainerName = trainerName;
+        if(trainerName != null && !trainerName.trim().isEmpty()){
+            this.trainerName = trainerName;
+        } else{
+            System.out.println("Warning: Trainer Name cannot be empty!");
+        }
     }
 
     public String getSpecialization() {
@@ -38,7 +46,11 @@ public class Trainer {
     }
 
     public void setSpecialization(String specialization) {
-        this.specialization = specialization;
+        if(specialization != null && !specialization.trim().isEmpty()){
+            this.specialization = specialization;
+        } else{
+            System.out.println("Warning: Specialization cannot be empty!");
+        }
     }
 
     public int getExperienceYears() {
@@ -46,7 +58,12 @@ public class Trainer {
     }
 
     public void setExperienceYears(int experienceYears) {
-        this.experienceYears = experienceYears;
+        if(experienceYears >= 0) {
+            this.experienceYears = experienceYears;
+        } else{
+            System.out.println("Warning: Experience Years cannot be negative! Setting to 0.");
+            this.experienceYears = 0;
+        }
     }
 
     //toString() method
