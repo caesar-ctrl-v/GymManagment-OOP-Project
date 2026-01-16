@@ -1,4 +1,4 @@
-package com.kaisar.gym;
+package com.kaisar.gym.model;
 
 public class StrengthWorkout extends WorkoutSession{
     private String muscleGroup;
@@ -8,7 +8,7 @@ public class StrengthWorkout extends WorkoutSession{
 
     public StrengthWorkout(int sessionId, Trainer trainer, int durationMinutes, String muscleGroup, int sets, int reps, int restMinutes){
         super(sessionId, trainer, durationMinutes);
-        this.muscleGroup = muscleGroup;
+        setMuscleGroup(muscleGroup);
         setSets(sets);
         setReps(reps);
         setRestMinutes(restMinutes);
@@ -18,47 +18,44 @@ public class StrengthWorkout extends WorkoutSession{
         return muscleGroup;
     }
 
-    public void setMuscleGroup(String muscleGroup) {
-        this.muscleGroup = muscleGroup;
-    }
-
     public int getSets() {
         return sets;
-    }
-
-    public void setSets(int sets) {
-        if(sets >= 0){
-            this.sets = sets;
-        } else{
-            System.out.println("Warning: sets cannot be negative! Setting to 0.");
-            this.sets = 0;
-        }
     }
 
     public int getReps() {
         return reps;
     }
 
-    public void setReps(int reps) {
-        if(sets >= 0){
-            this.reps = reps;
-        } else{
-            System.out.println("Warning: reps cannot be negative! Setting to 0.");
-            this.reps = 0;
-        }
-    }
-
     public int getRestMinutes() {
         return restMinutes;
     }
 
-    public void setRestMinutes(int restMinutes) {
-        if(sets >= 0){
-            this.restMinutes = restMinutes;
-        } else{
-            System.out.println("Warning: restMinutes cannot be negative! Setting to 0.");
-            this.restMinutes = 0;
+    public void setMuscleGroup(String muscleGroup) {
+        if(muscleGroup == null || muscleGroup.trim().isEmpty()){
+            throw new IllegalArgumentException("Muscle group cannot be empty");
         }
+        this.muscleGroup = muscleGroup;
+    }
+
+    public void setSets(int sets) {
+        if(sets <= 0){
+            throw new IllegalArgumentException("Sets must be greater than 0");
+        }
+        this.sets = sets;
+    }
+
+    public void setReps(int reps) {
+        if(reps <= 0){
+            throw new IllegalArgumentException("Reps must be greater than 0");
+        }
+        this.reps = reps;
+    }
+
+    public void setRestMinutes(int restMinutes) {
+        if(restMinutes <= 0){
+            throw new IllegalArgumentException("Rest Minutes must be greater than 0");
+        }
+        this.restMinutes = restMinutes;
     }
 
     @Override

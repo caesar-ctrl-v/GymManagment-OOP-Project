@@ -1,4 +1,4 @@
-package com.kaisar.gym;
+package com.kaisar.gym.model;
 
 public class YogaWorkout extends WorkoutSession {
     private String yogaStyle;
@@ -8,39 +8,35 @@ public class YogaWorkout extends WorkoutSession {
     //constructor
     public YogaWorkout(int sessionId, Trainer trainer, int durationMinutes, String yogaStyle, int difficultyLevel, boolean meditationIncluded){
         super(sessionId, trainer, durationMinutes);
-        this.yogaStyle = yogaStyle;
-        this.difficultyLevel = difficultyLevel;
-        this.meditationIncluded = meditationIncluded;
+        setYogaStyle(yogaStyle);
+        setDifficultyLevel(difficultyLevel);
+        setMeditationIncluded(meditationIncluded);
     }
 
     public String getYogaStyle() {
         return yogaStyle;
     }
 
-    public void setYogaStyle(String yogaStyle) {
-        if (yogaStyle != null && !yogaStyle.trim().isEmpty()) {
-            this.yogaStyle = yogaStyle;
-        } else{
-            System.out.println("Warning: Yoga Style cannot be empty!");
-        }
-    }
-
     public int getDifficultyLevel() {
         return difficultyLevel;
     }
 
-    public void setDifficultyLevel(int difficultyLevel) {
-        if(difficultyLevel <=5 && difficultyLevel >= 1){
-            this.difficultyLevel = difficultyLevel;
-        } else if(difficultyLevel > 5){
-            System.out.println("Such difficulty level does not exist!");
-        } else{
-            System.out.println("Difficulty level must be more than 1!");
-        }
-    }
-
     public boolean isMeditationIncluded() {
         return meditationIncluded;
+    }
+
+    public void setYogaStyle(String yogaStyle) {
+        if (yogaStyle == null || yogaStyle.trim().isEmpty()) {
+            throw new IllegalArgumentException("Yoga Style cannot be empty");
+        }
+        this.yogaStyle = yogaStyle;
+    }
+
+    public void setDifficultyLevel(int difficultyLevel) {
+        if(difficultyLevel > 5 || difficultyLevel < 1){
+            throw new IllegalArgumentException("Difficulty level must be between 1 and 5");
+        }
+        this.difficultyLevel = difficultyLevel;
     }
 
     public void setMeditationIncluded(boolean meditationIncluded) {

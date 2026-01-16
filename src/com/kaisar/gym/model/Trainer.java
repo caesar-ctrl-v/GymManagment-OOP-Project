@@ -1,4 +1,4 @@
-package com.kaisar.gym;
+package com.kaisar.gym.model;
 
 import java.util.ArrayList;
 
@@ -10,9 +10,9 @@ public class Trainer {
 
     //constructor
     public Trainer(int trainerId, String trainerName, String specialization, int experienceYears){
-        this.trainerId = trainerId;
-        this.trainerName = trainerName;
-        this.specialization = specialization;
+        setTrainerId(trainerId);
+        setTrainerName(trainerName);
+        setSpecialization(specialization);
         setExperienceYears(experienceYears);
     }
 
@@ -21,49 +21,44 @@ public class Trainer {
         return trainerId;
     }
 
-    public void setTrainerId(int trainerId) {
-        if(trainerId >= 0){
-            this.trainerId = trainerId;
-        } else{
-            System.out.println("Warning: Trainer ID cannot be negative!");
-        }
-    }
-
     public String getTrainerName() {
         return trainerName;
-    }
-
-    public void setTrainerName(String trainerName) {
-        if(trainerName != null && !trainerName.trim().isEmpty()){
-            this.trainerName = trainerName;
-        } else{
-            System.out.println("Warning: Trainer Name cannot be empty!");
-        }
     }
 
     public String getSpecialization() {
         return specialization;
     }
 
-    public void setSpecialization(String specialization) {
-        if(specialization != null && !specialization.trim().isEmpty()){
-            this.specialization = specialization;
-        } else{
-            System.out.println("Warning: Specialization cannot be empty!");
-        }
-    }
-
     public int getExperienceYears() {
         return experienceYears;
     }
 
-    public void setExperienceYears(int experienceYears) {
-        if(experienceYears >= 0) {
-            this.experienceYears = experienceYears;
-        } else{
-            System.out.println("Warning: Experience Years cannot be negative! Setting to 0.");
-            this.experienceYears = 0;
+    public void setTrainerId(int trainerId) {
+        if(trainerId <= 0){
+            throw new IllegalArgumentException("Trainer ID must be greater than zero");
         }
+        this.trainerId = trainerId;
+    }
+
+    public void setTrainerName(String trainerName) {
+        if(trainerName == null && trainerName.trim().isEmpty()){
+            throw new IllegalArgumentException("Trainer Name cannot be empty");
+        }
+        this.trainerName = trainerName;
+    }
+
+    public void setSpecialization(String specialization) {
+        if(specialization == null && specialization.trim().isEmpty()){
+            throw new IllegalArgumentException("Specialization cannot be empty");
+        }
+        this.specialization = specialization;
+    }
+
+    public void setExperienceYears(int experienceYears) {
+        if(experienceYears <= 0) {
+            throw new IllegalArgumentException("Experience Years must be greater than zero");
+        }
+        this.experienceYears = experienceYears;
     }
 
     //toString() method

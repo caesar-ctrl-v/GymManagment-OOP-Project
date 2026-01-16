@@ -1,8 +1,8 @@
-package com.kaisar.gym;
+package com.kaisar.gym.model;
 
 import java.util.ArrayList;
 
-public class WorkoutSession {
+public abstract class WorkoutSession {
     protected int sessionId;
     protected ArrayList<Member> members;
     protected Trainer trainer;
@@ -10,16 +10,16 @@ public class WorkoutSession {
 
     //constructor
     public WorkoutSession(int sessionId, Trainer trainer, int durationMinutes){
-        this.sessionId = sessionId;
-        this.trainer = trainer;
+        setSessionId(sessionId);
+        setTrainer(trainer);
         setDurationMinutes(durationMinutes);
         members = new ArrayList<>();
     }
     //default constructor for workoutSessions without trainer
     public WorkoutSession(int sessionId, int durationMinutes){
-        this.sessionId = sessionId;
+        setSessionId(sessionId);
         this.trainer = null;
-        this. durationMinutes = durationMinutes;
+        setDurationMinutes(durationMinutes);
         members = new ArrayList<>();
     }
 
@@ -28,45 +28,37 @@ public class WorkoutSession {
         return sessionId;
     }
 
-    public void setSessionId(int sessionId) {
-        if(sessionId >= 0){
-            this.sessionId = sessionId;
-        } else{
-            System.out.println("Warning: Session ID cannot be negative!");
-        }
-    }
-
     public Trainer getTrainer() {
         return trainer;
-    }
-
-    public void setTrainer(Trainer trainer) {
-        if(trainer != null){
-            this.trainer = trainer;
-        } else{
-            System.out.println("Warning: Trainer cannot be empty! Setting to null.");
-            this.trainer = null;
-        }
     }
 
     public int getDurationMinutes() {
         return durationMinutes;
     }
 
-    public void setDurationMinutes(int durationMinutes) {
-        if(durationMinutes >= 0 && durationMinutes <= 240){
-            this.durationMinutes = durationMinutes;
-        } else if(durationMinutes > 0){
-            System.out.println("Warning: Duration Minutes cannot exceed 240! Setting to 240.");
-            this.durationMinutes = 240;
-        } else{
-            System.out.println("Warning: Duration Minutes cannot be negative! Setting to 0.");
-            this.durationMinutes = 0;
-        }
-    }
-
     public ArrayList<Member> getMembers() {
         return members;
+    }
+
+    public void setSessionId(int sessionId) {
+        if(sessionId <= 0){
+            throw new IllegalArgumentException("Session ID must be greater than 0!");
+        }
+        this.sessionId = sessionId;
+    }
+
+    public void setTrainer(Trainer trainer) {
+        this.trainer = trainer;
+    }
+
+    public void setDurationMinutes(int durationMinutes) {
+        if(durationMinutes <= 0){
+            throw new IllegalArgumentException("Duration Minutes must be greater than 0!");
+        }
+        if(durationMinutes > 240){
+            throw new IllegalArgumentException("Duration Minutes must be less than 240!");
+        }
+        this.durationMinutes = durationMinutes;
     }
 
     public void setMembers(ArrayList<Member> members) {
@@ -85,14 +77,10 @@ public class WorkoutSession {
 
     //additional methods
     //get workout type method
-    public String getWorkoutType() {
-        return "General workout";
-    }
+    public abstract String getWorkoutType();
 
     //calculate calories burned method
-    public int calculateCaloriesBurned() {
-        return durationMinutes * 5;
-    }
+    public abstract int calculateCaloriesBurned();
 
     //get array of names of members
     public ArrayList<String> getMemberNames(){
