@@ -67,9 +67,9 @@ public class GymManagementMenu implements Menu{
         System.out.println("1. Add Strength Workout");
         System.out.println("2. Add Yoga Workout");
         System.out.println("3. View All Objects");
-        System.out.println("4. Count Burned Calories of All Objects");
-        System.out.println("5. View Strength Workouts Only");
-        System.out.println("6. View Yoga Workouts Only");
+        System.out.println("4. View Strength Workouts Only");
+        System.out.println("5. View Yoga Workouts Only");
+        System.out.println("6. Count Burned Calories of All Objects");
         System.out.println("7. Add Member");
         System.out.println("8. View All Members");
         System.out.println("9. Upgrade Member's membership");

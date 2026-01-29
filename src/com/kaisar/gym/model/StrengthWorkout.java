@@ -31,29 +31,29 @@ public class StrengthWorkout extends WorkoutSession{
     }
 
     public void setMuscleGroup(String muscleGroup) {
-        if(muscleGroup == null || muscleGroup.trim().isEmpty()){
-            throw new IllegalArgumentException("Muscle group cannot be empty");
+        if(muscleGroup == null || muscleGroup.isEmpty()){
+            throw new IllegalArgumentException("Muscle group cannot empty");
         }
         this.muscleGroup = muscleGroup;
     }
 
     public void setSets(int sets) {
         if(sets <= 0){
-            throw new IllegalArgumentException("Sets must be greater than 0");
+            throw new IllegalArgumentException("Sets must be a positive integer");
         }
         this.sets = sets;
     }
 
     public void setReps(int reps) {
         if(reps <= 0){
-            throw new IllegalArgumentException("Reps must be greater than 0");
+            throw new IllegalArgumentException("Reps must be a positive integer");
         }
         this.reps = reps;
     }
 
     public void setRestMinutes(int restMinutes) {
         if(restMinutes <= 0){
-            throw new IllegalArgumentException("Rest Minutes must be greater than 0");
+            throw new IllegalArgumentException("Rest minutes must be a positive integer");
         }
         this.restMinutes = restMinutes;
     }
