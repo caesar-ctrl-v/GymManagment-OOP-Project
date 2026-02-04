@@ -6,8 +6,8 @@ public class YogaWorkout extends WorkoutSession {
     private boolean meditationIncluded;
 
     //constructor
-    public YogaWorkout(int sessionId, Trainer trainer, int durationMinutes, String yogaStyle, int difficultyLevel, boolean meditationIncluded){
-        super(sessionId, trainer, durationMinutes);
+    public YogaWorkout(int sessionId, String member, String trainer, int durationMinutes, String yogaStyle, int difficultyLevel, boolean meditationIncluded){
+        super(sessionId, member, trainer, durationMinutes);
         setYogaStyle(yogaStyle);
         setDifficultyLevel(difficultyLevel);
         setMeditationIncluded(meditationIncluded);
@@ -63,7 +63,7 @@ public class YogaWorkout extends WorkoutSession {
 
     @Override
     public String toString(){
-        return super.toString() + " | Yoga Style: '" + yogaStyle
+        return super.toString() + "\n││ Yoga Style: '" + yogaStyle
                 + "', Difficulty Level: " + difficultyLevel
                 + ", Meditation Included: " + meditationIncluded;
     }

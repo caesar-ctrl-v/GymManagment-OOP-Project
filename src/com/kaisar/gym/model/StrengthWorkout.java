@@ -6,8 +6,8 @@ public class StrengthWorkout extends WorkoutSession{
     private int reps;
     private int restMinutes;
 
-    public StrengthWorkout(int sessionId, Trainer trainer, int durationMinutes, String muscleGroup, int sets, int reps, int restMinutes){
-        super(sessionId, trainer, durationMinutes);
+    public StrengthWorkout(int sessionId, String member, String trainer, int durationMinutes, String muscleGroup, int sets, int reps, int restMinutes){
+        super(sessionId, member, trainer, durationMinutes);
         setMuscleGroup(muscleGroup);
         setSets(sets);
         setReps(reps);
@@ -78,7 +78,7 @@ public class StrengthWorkout extends WorkoutSession{
 
     @Override
     public String toString(){
-        return super.toString() + " | Muscle Group: '" + muscleGroup
+        return super.toString() + "\n││ Muscle Group: '" + muscleGroup
                 + "', Sets Amount: " + sets
                 + ", Reps Amount: " + reps
                 + ", Rest Minutes: " + restMinutes;

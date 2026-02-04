@@ -4,23 +4,23 @@ import java.util.ArrayList;
 
 public abstract class WorkoutSession {
     protected int sessionId;
-    protected ArrayList<Member> members;
-    protected Trainer trainer;
+    protected String member;
+    protected String trainer;
     protected int durationMinutes;
 
     //constructor
-    public WorkoutSession(int sessionId, Trainer trainer, int durationMinutes){
+    public WorkoutSession(int sessionId,String member, String trainer, int durationMinutes) {
         setSessionId(sessionId);
+        setMember(member);
         setTrainer(trainer);
         setDurationMinutes(durationMinutes);
-        members = new ArrayList<>();
     }
     //default constructor for workoutSessions without trainer
     public WorkoutSession(int sessionId, int durationMinutes){
         setSessionId(sessionId);
         this.trainer = null;
         setDurationMinutes(durationMinutes);
-        members = new ArrayList<>();
+        member = null;
     }
 
     //getters and setters
@@ -28,16 +28,16 @@ public abstract class WorkoutSession {
         return sessionId;
     }
 
-    public Trainer getTrainer() {
+    public String getMember() {
+        return member;
+    }
+
+    public String getTrainer() {
         return trainer;
     }
 
     public int getDurationMinutes() {
         return durationMinutes;
-    }
-
-    public ArrayList<Member> getMembers() {
-        return members;
     }
 
     public void setSessionId(int sessionId) {
@@ -47,7 +47,11 @@ public abstract class WorkoutSession {
         this.sessionId = sessionId;
     }
 
-    public void setTrainer(Trainer trainer) {
+    public void setMember(String member) {
+        this.member = member;
+    }
+
+    public void setTrainer(String trainer) {
         this.trainer = trainer;
     }
 
@@ -61,17 +65,13 @@ public abstract class WorkoutSession {
         this.durationMinutes = durationMinutes;
     }
 
-    public void setMembers(ArrayList<Member> members) {
-        this.members = members;
-    }
-
     //toString() method
     @Override
     public String toString() {
 
         return "[ " + getWorkoutType() + " ] (Session ID: " + sessionId
-                + ", Members: " + getMemberNames()
-                + ", Trainer: " + getTrainerName()
+                + ", Member: " + member
+                + ", Trainer: " + trainer
                 + ", Duration Minutes: " + durationMinutes + ")";
     }
 
@@ -82,48 +82,4 @@ public abstract class WorkoutSession {
     //calculate calories burned method
     public abstract int calculateCaloriesBurned();
 
-    //get array of names of members
-    public ArrayList<String> getMemberNames(){
-        ArrayList<String> names = new ArrayList<>();
-        for (Member m : members) {
-            names.add(m.getFullName());
-        }
-        return names;
-    }
-    //get array of ages of members
-    public ArrayList<Integer> getMemberAges(){
-        ArrayList<Integer> ages = new ArrayList<>();
-        for(Member a: members){
-            ages.add(a.getAge());
-        }
-        return ages;
-    }
-    //add member method
-    public boolean addMember(Member member) {
-        if (member == null) {
-            return false;
-        }
-        if (members.contains(member)) {
-            return false;
-        }
-        members.add(member);
-        return true;
-    }
-    //remove member method
-    public boolean removeMember(Member member) {
-        if (members.remove(member)) {
-            return true;
-        } else {
-            System.out.println("Member not found in session.");
-            return false;
-        }
-    }
-    //get trainer name method
-    public String getTrainerName(){
-        if(trainer != null){
-            return trainer.getTrainerName();
-        } else{
-            return null;
-        }
-    }
 }

@@ -66,4 +66,34 @@ public class MemberDAO {
             DatabaseConnection.closeConnection(connection);
         }
     }
+
+    public boolean updateMember(Member member) {
+        String sql = "UPDATE member SET full_name=?, age=?, membership_name=? WHERE member_id=?";
+
+        Connection connection = DatabaseConnection.getConnection();
+        if(connection == null) return false;
+
+        try{
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, member.getFullName());
+            statement.setInt(2, member.getAge());
+            statement.setString(3, member.getMembershipName());
+            statement.setInt(4, member.getMemberId()); // WHERE condition
+
+            int  rowsUpdated = statement.executeUpdate();
+            statement.close();
+            if (rowsUpdated > 0) {
+                System.out.println("✅ Member updated: " + member.getFullName());
+                return true;
+            }
+
+        } catch (SQLException e){
+            System.out.println("❌ Update Failed!");
+            e.printStackTrace();
+        } finally{
+            DatabaseConnection.closeConnection(connection);
+        }
+
+        return false;
+    }
 }

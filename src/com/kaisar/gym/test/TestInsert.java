@@ -1,12 +1,12 @@
 package com.kaisar.gym.test;
 
-import com.kaisar.gym.database.MemberDAO;
-import com.kaisar.gym.model.Member;
+import com.kaisar.gym.database.*;
+import com.kaisar.gym.model.*;
 
 public class TestInsert {
     public static void main(String[] args) {
 
-        // создаём объект Member
+        // creating object Member
         Member member = new Member(
                 1,                  // member_id
                 "Kaisar",        // full_name
@@ -14,9 +14,9 @@ public class TestInsert {
                 "Premium"           // membership_name
         );
 
-        // вызываем DAO
-        MemberDAO dao = new MemberDAO();
-        dao.insertMember(member);
+        // calling DAO
+        MemberDAO memberDAO = new MemberDAO();
+        memberDAO.insertMember(member);
     }
 }
 

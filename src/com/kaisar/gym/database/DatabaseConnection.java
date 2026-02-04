@@ -12,7 +12,6 @@ public class DatabaseConnection {
         Connection connection = null;
         try {
             connection = DriverManager.getConnection(URL, USER, PASSWORD);
-            System.out.println("✅ Connected to database successfully!");
         } catch (SQLException e) {
             System.out.println("❌ Connection failed!");
             e.printStackTrace();
@@ -23,7 +22,6 @@ public class DatabaseConnection {
         if (connection != null) {
             try {
                 connection.close();
-                System.out.println("Connection closed.");
             } catch (SQLException e) {
                 e.printStackTrace();
             }
